@@ -78,15 +78,11 @@
 
         // 执行跳转
         if (jumpUrl) {
-            // 确保URL包含协议
-            const finalUrl = jumpUrl.startsWith('http://') || jumpUrl.startsWith('https://')
-                ? jumpUrl
-                : 'https://' + jumpUrl;
-
-            if (isValidUrl(finalUrl)) {
-                document.getElementById('message').textContent = `即将跳转到: ${finalUrl}`;
+            // 直接使用提供的URL，不做任何修改
+            if (isValidUrl(jumpUrl)) {
+                document.getElementById('message').textContent = `即将跳转到: ${jumpUrl}`;
                 setTimeout(() => {
-                    window.location.href = finalUrl;
+                    window.location.href = jumpUrl;
                 }, 1500);
             } else {
                 document.getElementById('message').textContent = '无效的跳转地址！';
