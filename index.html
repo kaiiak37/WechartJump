@@ -4,101 +4,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeGeeX 的导航页</title>
+    <title>页面跳转中...</title>
     <style>
-        /* 基础样式 */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            text-align: center;
+            background-color: #f5f5f5;
         }
 
-        /* 容器样式 */
         .container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 600px;
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* 标题样式 */
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-
-        /* 头像样式 */
-        .avatar {
-            width: 100px;
-            height: 100px;
+        .loading {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
             border-radius: 50%;
-            margin-bottom: 20px;
-            border: 3px solid #eee;
+            animation: spin 1s linear infinite;
+            margin: 20px 0;
         }
 
-        /* 链接列表样式 */
-        .links {
-            list-style: none;
-            padding: 0;
-        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
 
-        .links li {
-            margin: 15px 0;
-        }
-
-        .links a {
-            display: block;
-            padding: 15px 20px;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        /* 鼠标悬停效  果 */
-        .links a:hover {
-            background-color: #2980b9;
-        }
-
-        /* 页脚样式 */
-        .footer {
-            margin-top: 30px;
-            font-size: 0.8em;
-            color: #777;
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
 
 <body>
-
     <div class="container">
-        <!-- 替换成你的头像链接 -->
-        <img src="https://gitee.com/assets/no-avatar.png" alt="Avatar" class="avatar">
-
-        <h1>欢迎来到我的主页</h1>
-
-        <ul class="links">
-            <!-- 在这里添加你的跳转链接 -->
-            <li><a href="https://gitee.com" target="_blank">我的 Gitee</a></li>
-            <li><a href="https://blog.csdn.net" target="_blank">我的技术博客</a></li>
-            <li><a href="https://www.bilibili.com" target="_blank">我的 B 站主页</a></li>
-            <!-- 你可以继续添加更多链接 -->
-        </ul>
-
-        <div class="footer">
-            <p>© 2024 CodeGeeX. All rights reserved.</p>
-        </div>
+        <h2>页面正在跳转中...</h2>
+        <div class="loading"></div>
+        <p id="message">正在准备跳转，请稍候...</p>
     </div>
 
+    <script>
+        // 获取URL参数
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // 获取jump参数
+        const jumpUrl = getUrlParameter('jump');
+
+        // 验证URL格式
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // 执行跳转
+        if (jumpUrl) {
+            // 确保URL包含协议
+            const finalUrl = jumpUrl.startsWith('http://') || jumpUrl.startsWith('https://')
+                ? jumpUrl
+                : 'https://' + jumpUrl;
+
+            if (isValidUrl(finalUrl)) {
+                document.getElementById('message').textContent = `即将跳转到: ${finalUrl}`;
+                setTimeout(() => {
+                    window.location.href = finalUrl;
+                }, 1500);
+            } else {
+                document.getElementById('message').textContent = '无效的跳转地址！';
+            }
+        } else {
+            document.getElementById('message').textContent = '未找到跳转地址！';
+        }
+    </script>
 </body>
 
 </html>
